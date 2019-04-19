@@ -30,7 +30,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>php2.php</title>
+    <title>php3.php</title>
   </head>
   <body>
     <?php
