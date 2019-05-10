@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>js6_client.html</title>
+    <script type="text/javascript">
+
+      function alertAjax() {
+        var req = new XMLHttpRequest();
+        var str = document.getElementById('text1').value;
+        var param = "text=" + encodeURIComponent(str);
+        var url = "./js6_server.php";
+
+        req.onload = function() {
+          alert(req.responseText);
+        }
+
+        req.open('POST', url, true);
+        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        req.send(param);
+      }
+
+      window.onload = function() {
+        document.getElementById('botton1').addEventListener('click', alertAjax, false)
+      }
+    </script>
+  </head>
+  <body>
+    <input id="text1" name="text1" type="text" />
+    <input id="botton1" name="botton1" type="button" value="sendText" />
+  </body>
+
+</html>
