@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>js1.html</title>
+    <script type="text/javascript">
+      function changeCB() {
+        var obj = document.getElementById('checkBox');
+        obj.checked = !obj.checked;
+      }
+
+      window.onload = function() {
+        document.getElementById('button1').addEventListener('click', changeCB, false);
+      }
+    </script>
+  </head>
+  <body>
+    <input id="checkBox" name="checkBox" type="checkbox" />
+    <input id="button1" name="botton1" type="button" value="変更" />
+  </body>
+</html>

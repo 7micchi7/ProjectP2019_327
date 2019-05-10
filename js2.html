@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>js2.html</title>
+    <script type="text/javascript">
+      function put_message() {
+        var str = document.getElementById('textArea1').value;
+        alert(str);
+      }
+
+      window.onload = function() {
+        document.getElementById('button1').addEventListener('click', put_message, false);
+      }
+    </script>
+  </head>
+  <body>
+    <script>
+      
+    </script>
+    <input id="textArea1" name="textArea1" type="text" />
+    <input id="button1" name="botton1" type="button" value="送信" />
+
+  </body>
+</html>
