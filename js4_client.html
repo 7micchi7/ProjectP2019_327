@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>js4_client.html</title>
+    <script type="text/javascript">
+
+      function alertAjax() {
+        var req = new XMLHttpRequest();
+        req.onload = function() {
+          alert(req.responseText);
+        }
+
+        req.open('GET', './js4_server.php', true);
+        req.send(null);
+      }
+
+      window.onload = function() {
+        document.getElementById('botton1').addEventListener('click', alertAjax, false)
+      }
+    </script>
+  </head>
+  <body>
+    <input id="botton1" name="botton1" type="button" value="getMessege" />
+  </body>
+
+</html>
