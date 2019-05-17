@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>js7_client.html</title>
+    <script type="text/javascript">
+      
+      var p = document.createElement('p');
+      
+      function setLayerAjax() {
+        var req = new XMLHttpRequest();
+        var str = document.getElementById('text1').value;
+        var param = "text=" + encodeURIComponent(str);
+        var url = "./js7_server.php?" + param;
+
+        req.onload = function() {
+          p.innerText = req.responseText;
+          document.getElementById('Layer1').appendChild(p);
+        }
+
+        req.open('GET', url, true);
+        req.send(null);
+      }
+
+      window.onload = function() {
+        document.getElementById('botton1').addEventListener('click', setLayerAjax, false)
+      }
+    </script>
+  </head>
+  <body>
+    <input id="text1" name="text1" type="text" />
+    <input id="botton1" name="botton1" type="button" value="sendText" /> <br>
+    <div id="Layer1">
+    </div>
+  </body>
+
+</html>

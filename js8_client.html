@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>js8_client.html</title>
+    <script type="text/javascript">
+
+      window.onload = function() {
+        document.getElementById('botton1').addEventListener('click', load, false);
+      }
+
+      function load() {
+        var req = new XMLHttpRequest();
+        var url = "./js8_server.php";
+
+        req.onload = function() {
+          var tbody = document.getElementById('UserDate');
+          var DateArray = JSON.parse(req.responseText);
+
+          DateArray.forEach(function(key) {
+            
+            var tr = document.createElement('tr');
+
+            var td1 = document.createElement('td');
+            var td2 = document.createElement('td');
+            var td3 = document.createElement('td');
+            var td4 = document.createElement('td');
+
+            td1.innerText = key['name'];
+            td2.innerText = key['address'];
+            td3.innerText = key['phone'];
+            td4.innerText = key['email'];
+
+            tbody.appendChild(td1);
+            tbody.appendChild(td2);
+            tbody.appendChild(td3);
+            tbody.appendChild(td4);
+            tbody.appendChild(tr);
+
+          });
+        }
+
+        req.open('GET', url, true);
+        req.send(null);
+      }
+    </script>
+  </head>
+  <body>
+    <input id="botton1" name="botton1" type="button" value="load"/>
+    <table border="1">
+      <thead>
+        <tr>
+          <td>名前</td>
+          <td>住所</td>
+          <td>電話</td>
+          <td>Email</td>
+        </tr>
+      </thead>
+      <tbody id="UserDate">
+        <!-- jsでループ処理 -->
+      </tbody>
+    </table>
+  </body>
+
+</html>
