@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>js-advance-1.html</title>
+    <script type="text/javascript">
+      const languages = [
+        'Basic',
+        'C',
+        'C#',
+        'C++',
+        'D',
+        'Go',
+        'Haskell',
+        'Java',
+        'JavaScript',
+        'Kotlin',
+        'Objective-C',
+        'Perl',
+        'R',
+        'Swift',
+        'VisualBasic'
+      ];
+
+      function inputSupport() {
+        var text = document.getElementById('text1').value;
+        var result = languages.filter(function(value) {
+          return value.toLowerCase().startsWith(text.toLowerCase());
+        })
+
+
+        var ul = document.getElementById('Support');       
+        ul.textContent = null;
+
+        result.forEach(function(name) {
+          var li = document.createElement('li');
+          li.innerText = name;
+          ul.appendChild(li)
+        });
+      }
+
+      window.onload = function() {
+        document.getElementById('text1').addEventListener('input', inputSupport, false);
+      }
+    </script>
+  </head>
+  <body>
+    <input id="text1" name="text1" type="text" />
+    <ul id="Support">
+
+    </ul>
+  </body>
+</html>
