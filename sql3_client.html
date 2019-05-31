@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>sql3_client.html</title>
+    <script type="text/javascript">
+
+      window.onload = function() {
+        document.getElementById('botton1').addEventListener('click', load, false);
+      }
+
+
+      function load() {
+        var req = new XMLHttpRequest();
+        var str1 = document.getElementById('name').value;
+        var str2 = document.getElementById('address').value;
+        var str3 = document.getElementById('phone').value;
+        var str4 = document.getElementById('email').value;
+        var param = "name=" + encodeURIComponent(str1) +
+                    "&address=" + encodeURIComponent(str2) + 
+                    "&phone=" + encodeURIComponent(str3) +
+                    "&email=" + encodeURIComponent(str4);
+
+        var url = "./sql3_server.php";
+
+        var tbody = document.getElementById('UserData');       
+        tbody.textContent = null;
+
+        req.onload = function() {
+          var tbody = document.getElementById('UserData');
+          var DateArray = JSON.parse(req.responseText);
+
+          DateArray.forEach(function(key) {
+            
+            var tr = document.createElement('tr');
+
+            var td1 = document.createElement('td');
+            var td2 = document.createElement('td');
+            var td3 = document.createElement('td');
+            var td4 = document.createElement('td');
+
+            td1.innerText = key['name'];
+            td2.innerText = key['address'];
+            td3.innerText = key['phone'];
+            td4.innerText = key['email'];
+
+            tbody.appendChild(td1);
+            tbody.appendChild(td2);
+            tbody.appendChild(td3);
+            tbody.appendChild(td4);
+            tbody.appendChild(tr);
+
+          });
+        }
+
+        req.open('POST', url, true);
+        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        req.send(param);
+      }
+    </script>
+  </head>
+  <body>
+    <table border="1">
+      <thead>
+        <tr>
+          <td>名前</td>
+          <td>住所</td>
+          <td>電話</td>
+          <td>Email</td>
+        </tr>
+      </thead>
+      <tbody id="UserData">
+        <!-- jsでループ処理 -->
+      </tbody>
+    </table>
+
+    <p>名前:<input id="name" type="text" name="name"></p>
+    <p>住所:<input id="address" type="text" name="address"></p>
+    <p>電話:<input id="phone" type="text" name="phone"></p>
+    <p>Email:<input id="email" type="text" name="email"></p>
+    <input id="botton1" name="botton1" type="button" value="add"/>
+
+    <script>
+      load();
+    </script>
+    
+  </body>
+
+</html>
