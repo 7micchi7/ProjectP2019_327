@@ -24,13 +24,15 @@
 
       function inputSupport() {
         var text = document.getElementById('text1').value;
-        var result = languages.filter(function(value) {
-          return value.toLowerCase().startsWith(text.toLowerCase());
-        })
-
 
         var ul = document.getElementById('Support');       
         ul.textContent = null;
+
+        if(text == "") return;
+
+        var result = languages.filter(function(value) {
+          return value.toLowerCase().startsWith(text.toLowerCase());
+        })
 
         result.forEach(function(name) {
           var li = document.createElement('li');
