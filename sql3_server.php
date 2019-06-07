@@ -8,11 +8,18 @@
   try {
     $dbh = new PDO($dsn, $user, $password);
     
-    if(!(empty($_POST['name']) || empty($_POST['address']) || empty($_POST['phone']) || empty($_POST['email']))) {
-      $sql2 = "INSERT INTO addresses ( name, address, phone, email) VALUES ( :name, :address, :phone, :email)";
-      $PDOstmt = $dbh->prepare($sql2);
-      $params = array(':name' => $_POST['name'], ':address' => $_POST['address'],':phone' => $_POST['phone'],':email' => $_POST['email']);
-      $PDOstmt->execute($params);
+    if($_SERVER['REQUEST_METHOD'] == 'POST' ){ 
+      $name = filter_input(INPUT_GET, 'name');
+      $address = filter_input(INPUT_GET, 'address');
+      $phone = filter_input(INPUT_GET, 'phone');
+      $email = filter_input(INPUT_GET, 'email');
+
+      if(isset($name) && isset($address) && isset($phone) && isset($email)) {
+        $sql2 = "INSERT INTO addresses ( name, address, phone, email) VALUES ( :name, :address, :phone, :email)";
+        $PDOstmt = $dbh->prepare($sql2);
+        $params = array(':name' => $name, ':address' => $address, ':phone' => $phone, ':email' => $email);
+        $PDOstmt->execute($params);
+      }
     }
 
 
