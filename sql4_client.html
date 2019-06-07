@@ -2,12 +2,14 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>sql3_client.html</title>
+    <title>sql4_client.html</title>
     <script type="text/javascript">
 
       window.onload = function() {
-        document.getElementById('botton1').addEventListener('click', load, false);
+        document.getElementById('button1').addEventListener('click', add, false);
+        document.getElementById('searchButton').addEventListener('click', search, false);
       }
+
 
       function load() {
         let req = new XMLHttpRequest();
@@ -43,6 +45,26 @@
         req.send(param);
       }
 
+      function search() {
+        let req = new XMLHttpRequest();
+        let str1 = document.getElementById('name').value;
+        let str2 = document.getElementById('address').value;
+        let str3 = document.getElementById('phone').value;
+        let str4 = document.getElementById('email').value;
+        let param = "name=" + encodeURIComponent(str1) +
+                    "&address=" + encodeURIComponent(str2) + 
+                    "&phone=" + encodeURIComponent(str3) +
+                    "&email=" + encodeURIComponent(str4);
+        let url = "./sql4_server.php?" + param;
+
+        req.onload = function() {
+          makeTable('UserData', req.responseText);
+        }
+
+        req.open('GET', url, true);
+        req.send(null);
+      }
+
       function makeTable(elementID, responseText) {
         let tbody = document.getElementById(elementID);       
         tbody.textContent = null;
@@ -70,6 +92,7 @@
 
         });
       }
+
     </script>
   </head>
   <body>
@@ -91,10 +114,11 @@
     <p>住所:<input id="address" type="text" name="address"></p>
     <p>電話:<input id="phone" type="text" name="phone"></p>
     <p>Email:<input id="email" type="text" name="email"></p>
-    <input id="botton1" name="botton1" type="button" value="add"/>
+    <input id="button1" name="button1" type="button" value="add"/>
+    <input id="searchButton" name="searchButton" type="button" value="search"/>
 
     <script>
-      load();
+      load("");
     </script>
     
   </body>
