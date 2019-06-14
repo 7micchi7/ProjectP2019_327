@@ -34,12 +34,13 @@
       $email = filter_input(INPUT_GET, 'email');
       $sql = "SELECT * FROM addresses";
 
+
       $searchElement = [];
 
-      if(!empty($name)) $searchElement[] = "name = ". $dbh->quote($name);
-      if(!empty($address)) $searchElement[] = "addresses = ". $dbh->quote($address);
-      if(!empty($phone)) $searchElement[] = "phone = ". $dbh->quote($phone);
-      if(!empty($email)) $searchElement[] = "email = ". $dbh->quote($email);
+      if(!empty($name)) $searchElement[] = "name = :name";
+      if(!empty($address)) $searchElement[] = "address = :address";
+      if(!empty($phone)) $searchElement[] = "phone = :phone";
+      if(!empty($email)) $searchElement[] = "email = :email";
 
       if(count($searchElement) > 0) {
         $searchElement = implode(' AND ', $searchElement);
@@ -48,7 +49,13 @@
 
       $sql .= ";";
 
-      $PDOstmt = $dbh->query($sql);
+      if(!empty($name)) $elem[':name'] = $name;
+      if(!empty($address)) $elem[':address'] = $address;
+      if(!empty($phone))$elem[':phone'] = $phone;
+      if(!empty($email)) $elem[':email'] = $email;
+
+      $PDOstmt = $dbh->prepare($sql);
+      $PDOstmt->execute($elem);
 
       echo json_encode($PDOstmt->fetchAll(), JSON_UNESCAPED_UNICODE);
     }
