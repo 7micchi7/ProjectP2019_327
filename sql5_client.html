@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>sql5_client.html</title>
+    <script type="text/javascript">
+
+      window.onload = function() {
+        document.getElementById('button1').addEventListener('click', add, false);
+        document.getElementById('searchButton').addEventListener('click', search, false);
+        document.getElementById('updateButton').addEventListener('click', update, false);
+      }
+
+
+      function load() {
+        let req = new XMLHttpRequest();
+        let url = "./sql6_server.php";
+
+        req.onload = function() {
+          makeTable('UserData', req.responseText);
+        }
+
+        req.open('POST', url, true);
+        req.send(null);
+      }
+
+      function add() {
+        let req = new XMLHttpRequest();
+        let str1 = document.getElementById('name').value;
+        let str2 = document.getElementById('address').value;
+        let str3 = document.getElementById('phone').value;
+        let str4 = document.getElementById('email').value;
+        let param = "name=" + encodeURIComponent(str1) +
+                    "&address=" + encodeURIComponent(str2) + 
+                    "&phone=" + encodeURIComponent(str3) +
+                    "&email=" + encodeURIComponent(str4) +
+                    "&type=add";
+
+        let url = "./sql6_server.php";
+
+        req.onload = function() {
+          makeTable('UserData', req.responseText);
+        }
+
+        req.open('POST', url, true);
+        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        req.send(param);
+      }
+      
+      function update() {
+        let req = new XMLHttpRequest();
+        let str1 = document.getElementById('upName').value;
+        let str2 = document.getElementById('upAddress').value;
+        let str3 = document.getElementById('upPhone').value;
+        let str4 = document.getElementById('upEmail').value;
+        let str5 = document.getElementById('upId').value;
+        let param = "name=" + encodeURIComponent(str1) +
+                    "&address=" + encodeURIComponent(str2) + 
+                    "&phone=" + encodeURIComponent(str3) +
+                    "&email=" + encodeURIComponent(str4) +
+                    "&id=" + encodeURIComponent(str5) +
+                    "&type=update";
+
+        let url = "./sql6_server.php";
+
+        req.onload = function() {
+          makeTable('UserData', req.responseText);
+        }
+
+        req.open('POST', url, true);
+        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        req.send(param);
+      }
+
+      function search() {
+        let req = new XMLHttpRequest();
+        let str1 = document.getElementById('name').value;
+        let str2 = document.getElementById('address').value;
+        let str3 = document.getElementById('phone').value;
+        let str4 = document.getElementById('email').value;
+        let param = "name=" + encodeURIComponent(str1) +
+                    "&address=" + encodeURIComponent(str2) + 
+                    "&phone=" + encodeURIComponent(str3) +
+                    "&email=" + encodeURIComponent(str4);
+        let url = "./sql6_server.php?" + param;
+
+        req.onload = function() {
+          makeTable('UserData', req.responseText);
+        }
+
+        req.open('GET', url, true);
+        req.send(null);
+      }
+
+      function makeTable(elementID, responseText) {
+        let tbody = document.getElementById(elementID);       
+        tbody.textContent = null;
+        let DataArray = JSON.parse(responseText);
+
+        DataArray.forEach(function(key) {
+        
+          let tr = document.createElement('tr');
+          
+          let td1 = document.createElement('td');
+          let td2 = document.createElement('td');
+          let td3 = document.createElement('td');
+          let td4 = document.createElement('td');
+          let td5 = document.createElement('td');
+
+          td1.innerText = key['id'];
+          td2.innerText = key['name'];
+          td3.innerText = key['address'];
+          td4.innerText = key['phone'];
+          td5.innerText = key['email'];
+
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          tr.appendChild(td3);
+          tr.appendChild(td4);
+          tr.appendChild(td5);
+          tbody.appendChild(tr);
+        });
+      }
+
+
+    </script>
+  </head>
+  <body>
+    <table id="table1" border="1">
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>名前</td>
+          <td>住所</td>
+          <td>電話</td>
+          <td>Email</td>
+        </tr>
+      </thead>
+      <tbody id="UserData">
+        <!-- jsでループ処理 -->
+      </tbody>
+    </table>
+
+    <p>名前:<input id="name" type="text" name="name"></p>
+    <p>住所:<input id="address" type="text" name="address"></p>
+    <p>電話:<input id="phone" type="text" name="phone"></p>
+    <p>Email:<input id="email" type="text" name="email"></p>
+    <input id="button1" name="button1" type="button" value="add"/>
+    <input id="searchButton" name="searchButton" type="button" value="search"/>
+
+    <p>ID:<input id="upId" type="text" name="id"></p>
+    <p>名前:<input id="upName" type="text" name="name"></p>
+    <p>住所:<input id="upAddress" type="text" name="address"></p>
+    <p>電話:<input id="upPhone" type="text" name="phone"></p>
+    <p>Email:<input id="upEmail" type="text" name="email"></p>
+    <input id="updateButton" name="upadateButton1" type="button" value="update"/>
+
+    <script>
+      load();
+    </script>
+    
+  </body>
+
+</html>
