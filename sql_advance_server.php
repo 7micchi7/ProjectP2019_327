@@ -15,6 +15,7 @@
       $phone = filter_input(INPUT_POST, 'phone');
       $email = filter_input(INPUT_POST, 'email');
       $type = filter_input(INPUT_POST, 'type');
+      $deleteType = filter_input(INPUT_POST, 'deleteType');
       $idJson = filter_input(INPUT_POST, 'idArray');
       $idArray = json_decode($idJson);
 
@@ -63,6 +64,49 @@
 
         $PDOstmt = $dbh->prepare($sql);
         $PDOstmt->execute($idArray);
+      }
+
+      if($type==="selectDelete" && !empty($deleteType))  {
+        $sql = "DELETE FROM addresses WHERE ";
+        if($deleteType==="PerfectMatch") {
+          if(!empty($name)) $deleteElement[] = "name = :name";
+          if(!empty($address)) $deleteElement[] = "address = :address";
+          if(!empty($phone)) $deleteElement[] = "phone = :phone";
+          if(!empty($email)) $deleteElement[] = "email = :email";
+
+          if(count($deleteElement) > 0) {
+            $strElement = implode(' AND ', $deleteElement);
+            $sql .= $strElement;
+          }
+          $sql .= ";";
+
+          if(!empty($name)) $preElem[':name'] = $name;
+          if(!empty($address)) $preElem[':address'] = $address;
+          if(!empty($phone))$preElem[':phone'] = $phone;
+          if(!empty($email)) $preElem[':email'] = $email;
+
+        } elseif($deleteType==="PartialMatch") {
+
+          if(!empty($name)) $deleteElement[] = "name LIKE :name";
+          if(!empty($address)) $deleteElement[] = "address LIKE :address";
+          if(!empty($phone)) $deleteElement[] = "phone LIKE :phone";
+          if(!empty($email)) $deleteElement[] = "email LIKE :email";
+
+          if(count($deleteElement) > 0) {
+            $strElement = implode(' AND ', $deleteElement);
+            $sql .= $strElement;
+          }
+          $sql .= ";";
+
+          if(!empty($name)) $preElem[':name'] = '%'. $name. '%';
+          if(!empty($address)) $preElem[':address'] = '%'. $address. '%';
+          if(!empty($phone))$preElem[':phone'] = '%'. $phone. '%';
+          if(!empty($email)) $preElem[':email'] = '%'. $email. '%';
+
+        }
+
+        $PDOstmt = $dbh->prepare($sql);
+        $PDOstmt->execute($preElem);
       }
 
       $sql = "SELECT * FROM addresses;";

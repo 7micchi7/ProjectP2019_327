@@ -10,7 +10,8 @@
         document.getElementById('button1').addEventListener('click', add, false);
         document.getElementById('searchButton').addEventListener('click', search, false);
         document.getElementById('updateButton').addEventListener('click', update, false);
-        document.getElementById('checkedDeleteButton').addEventListener('click', checkedDeleteLC, false);
+        document.getElementById('checkedDeleteButton').addEventListener('click', checkedDeleteRC, false);
+        document.getElementById('selectDeleteButton').addEventListener('click', selectDeleteRC, false);
       }
 
 
@@ -112,7 +113,7 @@
         req.send(param);
       }
 
-      function checkedDeleteLC() {
+      function checkedDeleteRC() {
         const req = new XMLHttpRequest();
         const checkBox1 = document.getElementsByName('checkBox1');
         const deleteLC = [];
@@ -123,12 +124,39 @@
           }
         }
 
-        console.log(checkBox1.length);
-        console.log(deleteLC);
-
         let param = "idArray=" + encodeURIComponent(JSON.stringify(deleteLC)) +
                     "&type=checkedDelete";
 
+        let url = "./sql_advance_server.php";
+
+        req.onload = function() {
+          makeTable('UserData', req.responseText);
+        }
+
+        req.open('POST', url, true);
+        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        req.send(param);
+      }
+
+      function selectDeleteRC() {
+        let req = new XMLHttpRequest();
+        let str1 = document.getElementById('name').value;
+        let str2 = document.getElementById('address').value;
+        let str3 = document.getElementById('phone').value;
+        let str4 = document.getElementById('email').value;
+        let radioButton = document.getElementsByName('deleteType');
+        let deleteType;
+        radioButton.forEach( function(value, index){
+          console.log(radioButton[index].value);
+          if(radioButton[index].checked) deleteType = radioButton[index].value;
+        });
+
+        let param = "name=" + encodeURIComponent(str1) +
+                    "&address=" + encodeURIComponent(str2) + 
+                    "&phone=" + encodeURIComponent(str3) +
+                    "&email=" + encodeURIComponent(str4) +
+                    "&deleteType=" + encodeURIComponent(deleteType) +
+                    "&type=selectDelete";
         let url = "./sql_advance_server.php";
 
         req.onload = function() {
@@ -214,7 +242,11 @@
     <p>Email:<input id="email" type="text" name="email"></p>
     <input id="button1" name="button1" type="button" value="add"/>
     <input id="searchButton" name="searchButton" type="button" value="search"/>
-    <input id="checkedDeleteButton" name="checkedDeleteButton" type="button" value="CheckedDelete"/>
+    <input id="checkedDeleteButton" name="checkedDeleteButton" type="button" value="CheckedDelete"/><br>
+
+    <input id="selectDeleteButton" name="selectDeleteButton" type="button" value="selectDelete">
+    <input id="deleteType1" name="deleteType" type="radio" value="PerfectMatch" checked>PerfectMatch
+    <input id="deleteType2" name="deleteType" type="radio" value="PartialMatch">PartialMatch
 
     <p>ID:<input id="upId" type="text" name="id"></p>
     <p>名前:<input id="upName" type="text" name="name"></p>
