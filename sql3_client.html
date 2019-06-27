@@ -6,12 +6,12 @@
     <script type="text/javascript">
 
       window.onload = function() {
-        document.getElementById('botton1').addEventListener('click', load, false);
+        document.getElementById('botton1').addEventListener('click', add, false);
       }
 
       function load() {
         let req = new XMLHttpRequest();
-        let url = "./sql4_server.php";
+        let url = "./sql3_server.php";
 
         req.onload = function() {
           makeTable('UserData', req.responseText);
@@ -32,7 +32,7 @@
                     "&phone=" + encodeURIComponent(str3) +
                     "&email=" + encodeURIComponent(str4);
 
-        let url = "./sql4_server.php";
+        let url = "./sql3_server.php";
 
         req.onload = function() {
           makeTable('UserData', req.responseText);
